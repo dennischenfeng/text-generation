@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Big data and model files
+model_creation/data
+model_creation/models
+
+# Mac stuff
+.DS_Store
