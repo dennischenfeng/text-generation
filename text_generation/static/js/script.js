@@ -1,5 +1,5 @@
-function show_prediction() {
-    fetch('/predict', {
+function show_generated_text() {
+    fetch('/generate', {
         method: 'post',
         headers: {
             'Accept': 'application/json',
@@ -14,6 +14,6 @@ function show_prediction() {
         })
         .then((data) => {
             result_text = document.getElementById('result-text');
-            result_text.textContent = `Prediction: ${data.result}`;
+            result_text.textContent = `Generated text: ${data.result}`;
         });
 }

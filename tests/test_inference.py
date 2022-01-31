@@ -32,7 +32,7 @@ def test_generate_new_tokens(inference_session):
             temperature=1.0,
             top_p=1.0,
         )
-        assert new_ids.shape[-1] == num_new_tokens
+        assert new_ids.shape == (1, num_new_tokens)
     # TODO: how to test randomness?
 
 
