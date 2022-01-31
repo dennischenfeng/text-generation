@@ -10,19 +10,11 @@ packages = [{include = "text_generation"}]
 [tool.poetry.dependencies]
 python = "^3.8,<3.11"
 numpy = "^1.22.1"
-jupyter = "^1.0.0"
-matplotlib = "^3.5.1"
-pandas = "^1.4.0"
-jupyterlab = "^3.2.8"
-pytorch-lightning = "^1.5.9"
-transformers = {extras = ["onnx"], version = "^4.16.1"}
-wandb = "^0.12.9"
-datasets = "^1.18.1"
 einops = "^0.4.0"
+transformers = {extras = ["onnx"], version = "^4.16.2"}
 Flask = "^2.0.2"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
 
 [build-system]
 requires = ["poetry-core"]
