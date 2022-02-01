@@ -20,6 +20,11 @@ jupyter = "^1.0.0"
 jupyterlab = "^3.2.8"
 pytest = "^6.2.5"
 torch = "^1.10.2"
+pandas = "^1.4.0"
+matplotlib = "^3.5.1"
+pytorch-lightning = "^1.5.9"
+wandb = "^0.12.10"
+datasets = "^1.18.2"
 
 [build-system]
 requires = ["poetry-core"]
