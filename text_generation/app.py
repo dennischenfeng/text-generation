@@ -25,8 +25,8 @@ def index():
 def generate():
     init_text = request.json['inputText']
     init_ids = tokenizer(init_text, return_tensors="np")["input_ids"]
-    max_consume_tokens = 30  # TODO: change to 50 after modified onnx file
-    num_new_tokens = 30
+    max_consume_tokens = 50
+    num_new_tokens = 50
     new_ids = generate_new_tokens(
         num_new_tokens=num_new_tokens,
         init_ids=init_ids,

@@ -79,7 +79,6 @@ def warp_logits_with_top_p_filtering(
     
     mask_indices_to_remove = np.full(mask_sorted_indices_to_remove.shape, False)
     mask_indices_to_remove.put(sorted_indices, mask_sorted_indices_to_remove)
-    print(f"top_p = {top_p}; num tokens kept from top-p: {np.sum(mask_indices_to_remove == False)}")
     warped_logits = logits.copy()
     np.putmask(warped_logits, mask_indices_to_remove, -float("inf"))
     return warped_logits
