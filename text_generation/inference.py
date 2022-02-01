@@ -50,18 +50,19 @@ def sample_token_id_from_logits(
         raise ValueError("`logits` must be 1D.")
     print("warning: currently ignoring temperature and top_p")
     # return np.argmax(logits)
+    logits = warp_logits_with_temperature(logits, temperature=temperature)
     probs = softmax(logits)
     token_id = np.random.choice(range(len(probs)), p=probs)
     return token_id
 
 
-# def warp_logits_with_temperature(
-#     logits: np.ndarray, temperature: float = 1.0
-# ) -> np.ndarray:
-#     """
-#     Based from transformers.TemperatureLogitsWarper implementation. 
-#     """
-#     return logits / temperature
+def warp_logits_with_temperature(
+    logits: np.ndarray, temperature: float = 1.0
+) -> np.ndarray:
+    """
+    Based from transformers.TemperatureLogitsWarper implementation. 
+    """
+    return logits / temperature
 
 
 # def warp_logits_with_top_p_filtering(
