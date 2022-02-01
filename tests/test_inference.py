@@ -42,6 +42,7 @@ def test_sample_token_id_from_logits():
     assert sample_token_id_from_logits(np.array([-30.1, -40.0, -35.5])) in [0, 1, 2]
     # TODO: how to test randomness?    
 
+
 def test_warp_logits_with_top_p_filtering():
     logits = np.array([-5.0, -2.0, -1.0, -3.0, -4.0])
 
