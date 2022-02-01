@@ -32,8 +32,8 @@ def generate():
         init_ids=init_ids,
         max_consume_tokens=max_consume_tokens,
         session=session,
-        temperature=1.0,
         top_p=1.0,
+        temperature=1.0,
     )
     new_text = tokenizer.decode(new_ids[0, :])
     return jsonify({'result': new_text})

@@ -11,8 +11,8 @@ def generate_new_tokens(
     init_ids: np.ndarray, 
     max_consume_tokens: int,
     session: InferenceSession,
-    temperature: float = 1.0, 
     top_p: float = 1.0,
+    temperature: float = 1.0, 
 ):
     """
     Assumes output_names for onnx model is ["logits"]
@@ -32,7 +32,7 @@ def generate_new_tokens(
         )
         output_logits = session.run(output_names=['logits'], input_feed=input_feed)
         last_token_logits = output_logits[0][0, -1, :]
-        sampled_token_id = sample_token_id_from_logits(last_token_logits, temperature, top_p)
+        sampled_token_id = sample_token_id_from_logits(last_token_logits, top_p, temperature)
         input_ids = np.append(input_ids, sampled_token_id)  # flattens input_ids automatically
         input_ids = eo.rearrange(input_ids, "i -> 1 i")
     
@@ -41,19 +41,48 @@ def generate_new_tokens(
 
 
 def sample_token_id_from_logits(
-    logits: np.ndarray, temperature: float = 1.0, top_p: float = 1.0
+    logits: np.ndarray, top_p: float = 1.0, temperature: float = 1.0
 ) -> int:
     """
     Given a 1D array of logits, sample the ID, including temperature and top_p features.
     """
     if len(logits.shape) != 1:
         raise ValueError("`logits` must be 1D.")
-    print("warning: currently ignoring temperature and top_p")
     # return np.argmax(logits)
+    logits = warp_logits_with_top_p_filtering(logits, top_p=top_p)
     logits = warp_logits_with_temperature(logits, temperature=temperature)
     probs = softmax(logits)
     token_id = np.random.choice(range(len(probs)), p=probs)
     return token_id
+
+
+def warp_logits_with_top_p_filtering(
+    logits: np.ndarray, top_p: float = 1.0, min_tokens_to_keep: int = 1
+) -> np.ndarray:
+    """
+    Based from transformers.TemperatureLogitsWarper implementation. 
+    """
+    if len(logits.shape) != 1:
+        raise ValueError("`logits` must be 1D.")
+    sorted_indices = np.argsort(logits)[::-1]
+    sorted_logits = logits[sorted_indices]
+    cumulative_probs = np.cumsum(softmax(sorted_logits))
+
+    mask_sorted_indices_to_remove = cumulative_probs > top_p
+    # keep the first token above the threshold
+    ind_first_token_above = np.sum(mask_sorted_indices_to_remove == False)
+    if ind_first_token_above < logits.shape[0]:
+        mask_sorted_indices_to_remove[ind_first_token_above] = False
+
+    if min_tokens_to_keep > 1:
+        mask_sorted_indices_to_remove[:min_tokens_to_keep] = False
+    
+    mask_indices_to_remove = np.full(mask_sorted_indices_to_remove.shape, False)
+    mask_indices_to_remove.put(sorted_indices, mask_sorted_indices_to_remove)
+    print(f"top_p = {top_p}; num tokens kept from top-p: {np.sum(mask_indices_to_remove == False)}")
+    warped_logits = logits.copy()
+    np.putmask(warped_logits, mask_indices_to_remove, -float("inf"))
+    return warped_logits
 
 
 def warp_logits_with_temperature(
@@ -62,29 +91,9 @@ def warp_logits_with_temperature(
     """
     Based from transformers.TemperatureLogitsWarper implementation. 
     """
+    if len(logits.shape) != 1:
+        raise ValueError("`logits` must be 1D.")
     return logits / temperature
-
-
-# def warp_logits_with_top_p_filtering(
-#     logits: np.ndarray, top_p: float = 1.0
-# ) -> np.ndarray:
-#     sorted_indices = np.argsort(logits)[::-1]
-#     sorted_logits = logits[sorted_indices]
-#     cumulative_probs = sorted_logits.softmax(dim=-1).cumsum(dim=-1)
-
-#     # Remove tokens with cumulative top_p above the threshold (token with 0 are kept)
-#     sorted_indices_to_remove = cumulative_probs > self.top_p
-#     if self.min_tokens_to_keep > 1:
-#         # Keep at least min_tokens_to_keep (set to min_tokens_to_keep-1 because we add the first one below)
-#         sorted_indices_to_remove[..., : self.min_tokens_to_keep - 1] = 0
-#     # Shift the indices to the right to keep also the first token above the threshold
-#     sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
-#     sorted_indices_to_remove[..., 0] = 0
-
-#     # scatter sorted tensors to original indexing
-#     indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
-#     scores = scores.masked_fill(indices_to_remove, self.filter_value)
-#     return scores
 
 
 def softmax(

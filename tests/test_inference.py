@@ -7,7 +7,9 @@ from numpy.testing import assert_allclose
 from definitions import ROOT_DIR
 from pathlib import Path
 from transformers import AutoTokenizer
-from text_generation.inference import sample_token_id_from_logits, generate_new_tokens, softmax
+from text_generation.inference import (
+    sample_token_id_from_logits, generate_new_tokens, softmax, warp_logits_with_top_p_filtering
+)
 from onnxruntime import InferenceSession
 
 
@@ -26,12 +28,10 @@ def test_generate_new_tokens(inference_session):
     np.random.seed(0)
     for num_new_tokens in range(1,5):
         new_ids = generate_new_tokens(
-            num_new_tokens=num_new_tokens,
-            init_ids=np.array([[7, 200, 53, 10]]),
-            max_consume_tokens=3,
-            session=inference_session,
-            temperature=1.0,
-            top_p=1.0,
+            num_new_tokens,
+            np.array([[7, 200, 53, 10]]),
+            3,
+            inference_session,
         )
         assert new_ids.shape == (1, num_new_tokens)
     # TODO: how to test randomness?
@@ -41,6 +41,21 @@ def test_sample_token_id_from_logits():
     np.random.seed(0)
     assert sample_token_id_from_logits(np.array([-30.1, -40.0, -35.5])) in [0, 1, 2]
     # TODO: how to test randomness?    
+
+def test_warp_logits_with_top_p_filtering():
+    logits = np.array([-5.0, -2.0, -1.0, -3.0, -4.0])
+
+    warped_logits = warp_logits_with_top_p_filtering(logits)
+    assert np.sum(warped_logits == -float("inf")) == 0
+
+    warped_logits = warp_logits_with_top_p_filtering(logits, top_p=0.95)
+    assert np.sum(warped_logits == -float("inf")) == 2
+
+    warped_logits = warp_logits_with_top_p_filtering(logits, top_p=0.85)
+    assert np.sum(warped_logits == -float("inf")) == 3
+
+    warped_logits = warp_logits_with_top_p_filtering(logits, top_p=0.60)
+    assert np.sum(warped_logits == -float("inf")) == 4
 
 
 def test_softmax():
