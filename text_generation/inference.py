@@ -49,7 +49,11 @@ def sample_token_id_from_logits(
     if len(logits.shape) != 1:
         raise ValueError("`logits` must be 1D.")
     print("warning: currently ignoring temperature and top_p")
-    return np.argmax(logits)
+    # return np.argmax(logits)
+    probs = softmax(logits)
+    token_id = np.random.choice(range(len(probs)), p=probs)
+    return token_id
+
 
 # def warp_logits_with_temperature(
 #     logits: np.ndarray, temperature: float = 1.0
@@ -58,6 +62,7 @@ def sample_token_id_from_logits(
 #     Based from transformers.TemperatureLogitsWarper implementation. 
 #     """
 #     return logits / temperature
+
 
 # def warp_logits_with_top_p_filtering(
 #     logits: np.ndarray, top_p: float = 1.0
@@ -80,11 +85,17 @@ def sample_token_id_from_logits(
 #     scores = scores.masked_fill(indices_to_remove, self.filter_value)
 #     return scores
 
-# def softmax(
-#     logits: np.ndarray
-# ):
 
+def softmax(
+    logits: np.ndarray,
+) -> np.ndarray:
+    """
+    Apply softmax function to logits array. Need to implement this instead of using scipy or 
+    pytorch because those packages are too large for deployment.
+    """
+    # translation of logits doesn't affect computed probabilities, but will improve numerical stability
+    logits = logits - np.max(logits)
+    unnormed_probs = np.exp(logits)
+    normed_probs = unnormed_probs / np.sum(unnormed_probs)
+    return normed_probs
 
-#     y = np.exp(x - np.max(x))
-#     f_x = y / np.sum(np.exp(x))
-#     return f_x

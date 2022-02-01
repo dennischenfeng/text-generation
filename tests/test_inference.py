@@ -3,10 +3,11 @@ Test inference.py
 """
 import pytest
 import numpy as np
+from numpy.testing import assert_allclose
 from definitions import ROOT_DIR
 from pathlib import Path
 from transformers import AutoTokenizer
-from text_generation.inference import sample_token_id_from_logits, generate_new_tokens
+from text_generation.inference import sample_token_id_from_logits, generate_new_tokens, softmax
 from onnxruntime import InferenceSession
 
 
@@ -41,3 +42,13 @@ def test_sample_token_id_from_logits():
     assert sample_token_id_from_logits(np.array([-30.1, -40.0, -35.5])) in [0, 1, 2]
     # TODO: how to test randomness?    
 
+
+def test_softmax():
+    assert_allclose(softmax(np.array([10, 10])), 0.5)
+    assert_allclose(softmax(np.array([10, 10, 10, 10])), 0.25)
+    assert_allclose(
+        softmax(np.array([10, -1, 5, 7])),
+        np.array([9.4648e-01, 1.5808e-05, 6.3774e-03, 4.7123e-02]),
+        rtol=1e-4,
+    )
+    
