@@ -23,17 +23,16 @@ def index():
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    init_text = request.json['inputText']
-    init_ids = tokenizer(init_text, return_tensors="np")["input_ids"]
+    request_dict = request.json
+    init_ids = tokenizer(request_dict["inputText"], return_tensors="np")["input_ids"]
     max_consume_tokens = 50
-    num_new_tokens = 50
     new_ids = generate_new_tokens(
-        num_new_tokens=num_new_tokens,
+        num_new_tokens=request_dict["numTokens"],
         init_ids=init_ids,
         max_consume_tokens=max_consume_tokens,
         session=session,
-        top_p=1.0,
-        temperature=1.0,
+        top_p=request_dict["topP"],
+        temperature=request_dict["temperature"],
     )
     new_text = tokenizer.decode(new_ids[0, :])
     return jsonify({'result': new_text})

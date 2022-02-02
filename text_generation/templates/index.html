@@ -26,11 +26,11 @@
             Longer sequences will take longer durations to generate.
           </span>
         </div>
-        <input type="range" class="slider" id="num-tokens-slider" step="5" value="10" min="1" max="100">
+        <input type="range" class="slider" id="num-tokens-slider" step="5" value="10" min="5" max="100">
       </div>
       <div class="setting">
         <div id="top-p-text" class="hover-for-tooltip">
-          Top-p: <span id="top-p-value">1.0</span> 
+          Top-p: <span id="top-p-value">1</span> 
           <span class="tooltip">
             Sample only the tokens within the top p probability mass. 
             E.g. if top-p is 0.4, only the tokens within the top 40% of 
@@ -38,17 +38,17 @@
             to sampling from all tokens.
           </span>
         </div>
-        <input type="range" class="slider" id="top-p-slider" step="0.01" value="1.0" min="0.01" max="1.0">
+        <input type="range" class="slider" id="top-p-slider" step="0.01" value="1" min="0.01" max="1">
       </div>
       <div class="setting">
         <div id="temperature-text" class="hover-for-tooltip">
-          Temperature: <span id="temperature-value">1.0</span> 
+          Temperature: <span id="temperature-value">1</span> 
           <span class="tooltip">
             Controls randomness of sampling. Higher temperature corresponds 
             to more randomness in generated tokens.
           </span>
         </div>
-        <input type="range" class="slider" id="temperature-slider" step="0.01" value="1.0" min="0.01" max="5">
+        <input type="range" class="slider" id="temperature-slider" step="0.01" value="1" min="0.01" max="3">
       </div>
 
 
@@ -57,7 +57,7 @@
     </div>
     <div class="text-panel">
       <input type="text" id="text-field"><br>
-      <button id="generate-btn">Submit</button>
+      <button id="generate-btn">Generate</button>
       <div id='result-text'>(placeholder)</div>  
     </div>
     
