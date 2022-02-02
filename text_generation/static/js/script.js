@@ -1,3 +1,18 @@
+
+const numTokensVal = document.getElementById("num-tokens-value");
+const topPVal = document.getElementById("top-p-value");
+const temperatureVal = document.getElementById("temperature-value");
+
+const numTokensSlider = document.getElementById("num-tokens-slider");
+const topPSlider = document.getElementById("top-p-slider");
+const temperatureValSlider = document.getElementById("temperature-slider");
+
+const textField = document.getElementById("text-field");
+const generateBtn = document.getElementById("generate-btn");
+
+
+generateBtn.onclick = () => {show_generated_text()}
+
 function show_generated_text() {
     fetch('/generate', {
         method: 'post',
@@ -6,7 +21,7 @@ function show_generated_text() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            inputText: document.getElementById('input-text-box').value
+            inputText: textField.value
         })
     })
         .then((response) => {

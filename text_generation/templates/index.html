@@ -1,24 +1,82 @@
 <!DOCTYPE html>
 <html lang='en'>
 <head>
-  <title>Sentimental</title>
+  <title>Text Generator</title>
   <meta charset='UTF-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   
-  <link href='/static/css/style.css' rel='stylesheet'>
-  <script src='/static/js/script.js' defer></script>
+  <link href='../static/css/style.css' rel='stylesheet'>
+  <script src='../static/js/script.js' defer></script>
 </head>
 
 <body>
-  <div>Text generation app! Input some text and the model will auto-complete it.</div>
-  <form>
+  <header class="header">
+    <h1 class="title">Text Generator</h1>
+    <div class="subtitle">Generate machine learning paper abstracts, using a fine-tuned GPT2 model!</div>
+  </header>
+  <main class="main">
+    <div class="settings-panel">
+      <div class="setting">
+        <div id="num-tokens-text" class="hover-for-tooltip">
+          Generation length: <span id="num-tokens-value">10</span> 
+          <span class="tooltip">
+            Length of sequence (number of tokens) to be generated. 
+            Rule of thumb: One token is about 4 characters, or 3/4 of a word, on average.
+            Longer sequences will take longer durations to generate.
+          </span>
+        </div>
+        <input type="range" class="slider" id="num-tokens-slider" step="5" value="10" min="1" max="100">
+      </div>
+      <div class="setting">
+        <div id="top-p-text" class="hover-for-tooltip">
+          Top-p: <span id="top-p-value">1.0</span> 
+          <span class="tooltip">
+            Sample only the tokens within the top p probability mass. 
+            E.g. if top-p is 0.4, only the tokens within the top 40% of 
+            probabilitiy mass will be sampled from. Top-p of 1.0 corresponds 
+            to sampling from all tokens.
+          </span>
+        </div>
+        <input type="range" class="slider" id="top-p-slider" step="0.01" value="1.0" min="0.01" max="1.0">
+      </div>
+      <div class="setting">
+        <div id="temperature-text" class="hover-for-tooltip">
+          Temperature: <span id="temperature-value">1.0</span> 
+          <span class="tooltip">
+            Controls randomness of sampling. Higher temperature corresponds 
+            to more randomness in generated tokens.
+          </span>
+        </div>
+        <input type="range" class="slider" id="temperature-slider" step="0.01" value="1.0" min="0.01" max="5">
+      </div>
+
+
+      
+      
+    </div>
+    <div class="text-panel">
+      <input type="text" id="text-field"><br>
+      <button id="generate-btn">Submit</button>
+      <div id='result-text'>(placeholder)</div>  
+    </div>
+    
+  </main>
+  <footer class="footer">
+    <div>(placeholder for footer)</div>
+  </footer>
+
+
+
+
+
+
+  <!-- <form>
     <label for='input-text-box'>Input text:</label>
     <input type='text' id='input-text-box' name='input-text-box'><br>
     <button onClick='show_generated_text(); return false'>Submit</button>
   </form>
-
   <br>
-  <div id='result-text'></div>
+  <div id='result-text'></div> -->
 </body>
 </html>
