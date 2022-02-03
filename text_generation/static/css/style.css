@@ -90,6 +90,8 @@ body {
 #text-field {
   width: 14rem;
   height: 10rem;
+  background-color: whitesmoke;
+  white-space: break-spaces;
   /* margin-bottom: 1rem; */
 }
 

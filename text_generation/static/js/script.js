@@ -39,7 +39,6 @@ function show_generated_text() {
             return response.json();
         })
         .then((data) => {
-            result_text = document.getElementById('result-text');
-            result_text.textContent = `Generated text: ${data.result}`;
+            textField.value = `${textField.value}${data.result}`
         });
 }
