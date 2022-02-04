@@ -6,6 +6,7 @@ from flask import Flask, render_template, jsonify, request
 from onnxruntime import InferenceSession
 from transformers import AutoTokenizer
 from text_generation.inference import generate_new_tokens
+import time
 
 
 app = Flask(__name__)
@@ -20,6 +21,10 @@ tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
 def index():
     return render_template('index.html')
 
+# TODO: test
+@app.route('/time')
+def hello():
+    return {"result": time.time()}
 
 @app.route('/generate', methods=['POST'])
 def generate():
