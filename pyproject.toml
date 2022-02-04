@@ -25,6 +25,7 @@ matplotlib = "^3.5.1"
 pytorch-lightning = "^1.5.9"
 wandb = "^0.12.10"
 datasets = "^1.18.2"
+python-dotenv = "^0.19.2"
 
 [build-system]
 requires = ["poetry-core"]
