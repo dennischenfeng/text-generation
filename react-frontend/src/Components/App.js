@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import Button from '@mui/material/Button';
-import Slider from '@mui/material/Slider';
+import React, { useState, useEffect } from 'react'
+import './App.css'
+import { Header, Footer } from './Layouts'
+import Button from '@mui/material/Button'
+import Slider from '@mui/material/Slider'
 
-function App() {
+export default function App() {
   const [text, setText] = useState('');
   useEffect(() => {
     fetch('/generate', {
@@ -17,22 +18,14 @@ function App() {
       })
     })
     .then(res => res.json())
-    .then(data => {setText(data.result);})
+    .then(data => {setText(data.result)})
   }, [])
 
   return (
     <div className="App">
-      <header className="App-header">
-        <Slider>Slider1</Slider>
-        <Button variant='contained'>Hello!</Button>
-        <h1>test: {text}</h1>
-        <h1 className="title">Text Autocomplete</h1>
-        <div className="subtitle">
-          Autocomplete your writing for machine learning paper abstracts,
-          using a fine-tuned GPT2 model! As an example, start typing
-          "We propose a method to" and click `Generate`.
-        </div>
-      </header>
+      <Header/>
+
+      <div>Test: {text}</div>
       <main className="main">
         <div className="settings-panel">
           <div className="setting">
@@ -75,8 +68,8 @@ function App() {
         </div>
         
       </main>
-    </div>
-  );
-}
 
-export default App;
+      <Footer/>
+    </div>
+  )
+}
