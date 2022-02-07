@@ -15,10 +15,10 @@ export default function App() {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        inputText: text, //textField.value,
-        numTokens: genLength, //parseInt(numTokensVal.textContent),
-        topP: topP, //parseFloat(topPVal.textContent),
-        temperature: temperature, //parseFloat(temperatureVal.textContent),
+        inputText: text,
+        numTokens: genLength,
+        topP: topP,
+        temperature: temperature,
       })
     })
     .then(res => res.json())
