@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import { Header, Footer } from './Layouts'
+import { Header, Footer, Settings } from './Components'
 import { Grid, Typography, Paper, Card, Box } from '@mui/material'
 import Slider from '@mui/material/Slider'
 
 export default function App() {
+  const [genLength, setGenLength] = useState(10)
+  const [topP, setTopP] = useState(1.0)
+  const [temperature, setTemperature] = useState(1.0)
+  
   const [text, setText] = useState('');
   useEffect(() => {
     fetch('/generate', {
@@ -24,6 +28,7 @@ export default function App() {
   return (
     <div className="App">
       <Header/>
+      <Settings genLength={genLength} topP={topP} temperature={temperature} />  
       
       {/* <div class="settings-panel">
         <div class="setting">
