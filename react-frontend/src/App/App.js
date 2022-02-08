@@ -1,7 +1,7 @@
 import React, { useState} from 'react'
 import theme from './theme'
 import { Header, Footer, Settings, TextPanel } from './Components'
-import { Grid, Typography, Paper, Card, Box, Stack, ThemeProvider } from '@mui/material'
+import { Stack, ThemeProvider } from '@mui/material'
 
 export default function App() {
   const [genLength, setGenLength] = useState(10)
