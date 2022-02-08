@@ -9,7 +9,7 @@ from text_generation.inference import generate_new_tokens
 import time
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=f'{ROOT_DIR}/react-frontend/build', static_url_path='/')
 application = app  # TODO: remove the need to rename this
 session = InferenceSession(
     str(ROOT_DIR / "models/distilgpt2_onArxivMLData_quantized.onnx")
@@ -19,12 +19,8 @@ tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return app.send_static_file('index.html')
 
-# TODO: test
-@app.route('/time')
-def hello():
-    return {"result": time.time()}
 
 @app.route('/generate', methods=['POST'])
 def generate():
