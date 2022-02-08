@@ -5,11 +5,12 @@ const styleTextPanel = {
   width: 400,
   padding: 20,
   margin: 20,
+  textAlign: 'center',
 }
 
 export default function TextPanel({text, setText, generateText, isLoading}) {
   return (
-    <Card style={styleTextPanel}>
+    <Card style={styleTextPanel} >
       <TextField 
         multiline 
         fullWidth 
@@ -25,7 +26,7 @@ export default function TextPanel({text, setText, generateText, isLoading}) {
       <Button 
         onClick={generateText} 
         variant='contained' 
-        style={{marginTop: 10}} 
+        style={{marginTop: 20}} 
         disabled={isLoading || (text == '')}
       >
         {isLoading ? 'Loading...' : 'Generate'}

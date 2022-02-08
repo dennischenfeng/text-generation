@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import './App.css'
+import React, { useState} from 'react'
 import theme from './theme'
 import { Header, Footer, Settings, TextPanel } from './Components'
 import { Grid, Typography, Paper, Card, Box, Stack, ThemeProvider } from '@mui/material'
@@ -33,28 +32,26 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <Header/>
+      <Header/>
 
-        <Stack direction='row' alignItems='center' justifyContent='center'>
-          <Settings 
-            genLength={genLength} 
-            setGenLength={setGenLength}
-            topP={topP} 
-            setTopP={setTopP}
-            temperature={temperature} 
-            setTemperature={setTemperature}
-          />  
-          <TextPanel 
-            text={text}
-            setText={setText}
-            generateText={generateText}
-            isLoading={isLoading}
-          />
-        </Stack>
+      <Stack direction='row' alignItems='center' justifyContent='center'>
+        <Settings 
+          genLength={genLength} 
+          setGenLength={setGenLength}
+          topP={topP} 
+          setTopP={setTopP}
+          temperature={temperature} 
+          setTemperature={setTemperature}
+        />  
+        <TextPanel 
+          text={text}
+          setText={setText}
+          generateText={generateText}
+          isLoading={isLoading}
+        />
+      </Stack>
 
-        <Footer/>
-      </div>
+      <Footer />
     </ThemeProvider>
   )
 }

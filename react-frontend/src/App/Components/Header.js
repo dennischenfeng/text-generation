@@ -3,7 +3,7 @@ import { Typography, AppBar } from '@mui/material'
 
 export default function Header() {
   return (
-    <AppBar position='static'>
+    <AppBar position='static' style={{textAlign: 'center'}}>
       <Typography variant='h2'>
         Text Autocomplete
       </Typography>
