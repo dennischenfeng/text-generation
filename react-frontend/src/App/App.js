@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
+import theme from './theme'
 import { Header, Footer, Settings, TextPanel } from './Components'
-import { Grid, Typography, Paper, Card, Box, Stack } from '@mui/material'
-import Slider from '@mui/material/Slider'
+import { Grid, Typography, Paper, Card, Box, Stack, ThemeProvider } from '@mui/material'
 
 export default function App() {
   const [genLength, setGenLength] = useState(10)
   const [topP, setTopP] = useState(1.0)
   const [temperature, setTemperature] = useState(1.0)
-  const [text, setText] = useState('');
+  const [text, setText] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   function generateText() {
+    setIsLoading(true)
+
     fetch('/generate', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -22,30 +25,36 @@ export default function App() {
       })
     })
     .then(res => res.json())
-    .then(data => {setText(`${text}${data.result}`)})
+    .then(data => {
+      setText(`${text}${data.result}`)
+      setIsLoading(false)
+    })
   }
 
   return (
-    <div className="App">
-      <Header/>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Header/>
 
-      <Stack direction='row' alignItems='center' justifyContent='center'>
-        <Settings 
-          genLength={genLength} 
-          setGenLength={setGenLength}
-          topP={topP} 
-          setTopP={setTopP}
-          temperature={temperature} 
-          setTemperature={setTemperature}
-        />  
-        <TextPanel 
-          text={text}
-          setText={setText}
-          generateText={generateText}
-        />
-      </Stack>
+        <Stack direction='row' alignItems='center' justifyContent='center'>
+          <Settings 
+            genLength={genLength} 
+            setGenLength={setGenLength}
+            topP={topP} 
+            setTopP={setTopP}
+            temperature={temperature} 
+            setTemperature={setTemperature}
+          />  
+          <TextPanel 
+            text={text}
+            setText={setText}
+            generateText={generateText}
+            isLoading={isLoading}
+          />
+        </Stack>
 
-      <Footer/>
-    </div>
+        <Footer/>
+      </div>
+    </ThemeProvider>
   )
 }

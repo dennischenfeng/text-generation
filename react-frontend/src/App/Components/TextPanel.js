@@ -7,7 +7,7 @@ const styleTextPanel = {
   margin: 20,
 }
 
-export default function TextPanel({text, setText, generateText}) {
+export default function TextPanel({text, setText, generateText, isLoading}) {
   return (
     <Card style={styleTextPanel}>
       <TextField 
@@ -22,8 +22,13 @@ export default function TextPanel({text, setText, generateText}) {
         }
       />
 
-      <Button onClick={generateText} variant='contained' style={{marginTop: 10}}>
-        Generate
+      <Button 
+        onClick={generateText} 
+        variant='contained' 
+        style={{marginTop: 10}} 
+        disabled={isLoading || (text == '')}
+      >
+        {isLoading ? 'Loading...' : 'Generate'}
       </Button>
     </Card>
 
