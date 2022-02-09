@@ -1,1 +1,1 @@
-web: gunicorn text_generation.app
+web: gunicorn text_generation.app:app
