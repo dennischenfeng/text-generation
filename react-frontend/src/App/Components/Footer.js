@@ -19,7 +19,7 @@ export default function Footer() {
       <Typography>
         Copyright © {year} Dennis Feng
       </Typography>
-      <Link href="https://github.com/dennischenfeng" target="_blank">
+      <Link href="https://github.com/dennischenfeng/text-generation" target="_blank">
         <GitHubIcon/>
       </Link>
     </Container>
