@@ -18,7 +18,8 @@ export default function TextPanel({text, setText, generateText, isLoading}) {
         value={text} 
         onChange={(e) => setText(e.target.value)}
         placeholder={
-          'Start typing (e.g. "We propose a method to") and then click "Generate". ' + 
+          'Start typing (e.g. "We propose a method to") and then click "Generate". Append to or modify ' +
+          'the text in any fashion and hit "Generate" again, as many times as you want! ' +
           'Tip: don\'t include a space at the end of your input.'
         }
       />
