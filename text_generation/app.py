@@ -10,7 +10,7 @@ import time
 
 
 app = Flask(__name__, static_folder=f'{ROOT_DIR}/react-frontend/build', static_url_path='/')
-application = app  # TODO: remove the need to rename this
+# application = app  # TODO: remove the need to rename this
 session = InferenceSession(
     str(ROOT_DIR / "models/distilgpt2_onArxivMLData_quantized.onnx")
 )
@@ -41,4 +41,3 @@ def generate():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
-
