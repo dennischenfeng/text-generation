@@ -131,6 +131,12 @@ dmypy.json
 # Big data and model files
 model_creation/data
 model_creation/models
+models/pytorch
+models/huggingface
+
 
 # Mac stuff
 .DS_Store
+
+# temp files
+un1
