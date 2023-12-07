@@ -8,7 +8,10 @@ from definitions import ROOT_DIR
 from pathlib import Path
 from transformers import AutoTokenizer
 from text_generation.inference import (
-    sample_token_id_from_logits, generate_new_tokens, softmax, warp_logits_with_top_p_filtering
+    sample_token_id_from_logits,
+    generate_new_tokens,
+    softmax,
+    warp_logits_with_top_p_filtering,
 )
 from onnxruntime import InferenceSession
 
@@ -20,13 +23,13 @@ def tokenizer():
 
 @pytest.fixture(scope="function")
 def inference_session():
-    model_path = ROOT_DIR / "models/distilgpt2_onArxivMLData_quantized.onnx"
+    model_path = ROOT_DIR / "models/onnx/quantized_model.onnx"
     return InferenceSession(str(model_path))
 
 
 def test_generate_new_tokens(inference_session):
     np.random.seed(0)
-    for num_new_tokens in range(1,5):
+    for num_new_tokens in range(1, 5):
         new_ids = generate_new_tokens(
             num_new_tokens,
             np.array([[7, 200, 53, 10]]),
@@ -40,7 +43,7 @@ def test_generate_new_tokens(inference_session):
 def test_sample_token_id_from_logits():
     np.random.seed(0)
     assert sample_token_id_from_logits(np.array([-30.1, -40.0, -35.5])) in [0, 1, 2]
-    # TODO: how to test randomness?    
+    # TODO: how to test randomness?
 
 
 def test_warp_logits_with_top_p_filtering():
@@ -67,4 +70,3 @@ def test_softmax():
         np.array([9.4648e-01, 1.5808e-05, 6.3774e-03, 4.7123e-02]),
         rtol=1e-4,
     )
-    

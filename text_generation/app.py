@@ -9,20 +9,20 @@ from text_generation.inference import generate_new_tokens
 import time
 
 
-app = Flask(__name__, static_folder=f'{ROOT_DIR}/react-frontend/build', static_url_path='/')
-# application = app  # TODO: remove the need to rename this
-session = InferenceSession(
-    str(ROOT_DIR / "models/distilgpt2_onArxivMLData_quantized.onnx")
+app = Flask(
+    __name__, static_folder=f"{ROOT_DIR}/react-frontend/build", static_url_path="/"
 )
+# application = app  # TODO: remove the need to rename this
+session = InferenceSession(str(ROOT_DIR / "models/onnx/quantized_model.onnx"))
 tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return app.send_static_file('index.html')
+    return app.send_static_file("index.html")
 
 
-@app.route('/generate', methods=['POST'])
+@app.route("/generate", methods=["POST"])
 def generate():
     request_dict = request.json
     init_ids = tokenizer(request_dict["inputText"], return_tensors="np")["input_ids"]
@@ -36,8 +36,8 @@ def generate():
         temperature=request_dict["temperature"],
     )
     new_text = tokenizer.decode(new_ids[0, :])
-    return jsonify({'result': new_text})
-    
+    return jsonify({"result": new_text})
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=80)

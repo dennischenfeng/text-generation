@@ -44,7 +44,7 @@ from typing import OrderedDict
 from transformers.models.gpt2 import GPT2OnnxConfig
 from pathlib import Path
 from transformers.onnx import export, validate_model_outputs
-from onnxruntime.quantization import QuantizationMode, quantize
+from onnxruntime.quantization import QuantizationMode, quantize_dynamic
 import onnx
 from pathlib import Path
 
@@ -171,11 +171,17 @@ validate_model_outputs(
 )
 
 # quantize and save onnx model
-onnx_model = onnx.load(FILE_DIR / "../models/onnx/model.onnx")
-quantized_onnx_model = quantize(
-    model=onnx_model,
-    quantization_mode=QuantizationMode.IntegerOps,
-    force_fusions=True,
-    symmetric_weight=True,
+model_input_path = FILE_DIR / "../models/onnx/model.onnx"
+model_output_path = FILE_DIR / "../models/onnx/quantized_model.onnx"
+quantized_model = quantize_dynamic(
+    model_input=model_input_path,
+    model_output=model_output_path,
 )
-onnx.save_model(quantized_onnx_model, FILE_DIR / "../models/onnx/model_quantized.onnx")
+# onnx_model = onnx.load(FILE_DIR / "../models/onnx/model.onnx")
+# quantized_onnx_model = quantize(
+#     model=onnx_model,
+#     quantization_mode=QuantizationMode.IntegerOps,
+#     force_fusions=True,
+#     symmetric_weight=True,
+# )
+# onnx.save_model(quantized_onnx_model, FILE_DIR / "../models/onnx/model_quantized.onnx")
