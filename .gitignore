@@ -133,6 +133,7 @@ model_creation/data
 model_creation/models
 models/pytorch
 models/huggingface
+models/intermediate_onnx
 
 
 # Mac stuff

@@ -148,7 +148,7 @@ onnx_config = GPT2OnnxConfig(model.config, task="causal-lm")
 onnx_config.default_onnx_opset
 print("onnx_config.outputs:")
 print(onnx_config.outputs)
-onnx_path = FILE_DIR / Path("../models/onnx/model.onnx")
+onnx_path = FILE_DIR / Path("../models/intermediate_onnx/model.onnx")
 onnx_inputs, onnx_outputs = export(
     tokenizer, model, onnx_config, onnx_config.default_onnx_opset, onnx_path
 )
@@ -171,17 +171,9 @@ validate_model_outputs(
 )
 
 # quantize and save onnx model
-model_input_path = FILE_DIR / "../models/onnx/model.onnx"
-model_output_path = FILE_DIR / "../models/onnx/quantized_model.onnx"
+model_input_path = FILE_DIR / "../models/intermediate_onnx/model.onnx"
+model_output_path = FILE_DIR / "../models/final_onnx/quantized_model.onnx"
 quantized_model = quantize_dynamic(
     model_input=model_input_path,
     model_output=model_output_path,
 )
-# onnx_model = onnx.load(FILE_DIR / "../models/onnx/model.onnx")
-# quantized_onnx_model = quantize(
-#     model=onnx_model,
-#     quantization_mode=QuantizationMode.IntegerOps,
-#     force_fusions=True,
-#     symmetric_weight=True,
-# )
-# onnx.save_model(quantized_onnx_model, FILE_DIR / "../models/onnx/model_quantized.onnx")
