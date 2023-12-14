@@ -13,7 +13,7 @@ app = Flask(
     __name__, static_folder=f"{ROOT_DIR}/react-frontend/build", static_url_path="/"
 )
 # application = app  # TODO: remove the need to rename this
-session = InferenceSession(str(ROOT_DIR / "models/onnx/quantized_model.onnx"))
+session = InferenceSession(str(ROOT_DIR / "models/final_onnx/quantized_model.onnx"))
 tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
 
 

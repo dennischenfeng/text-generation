@@ -23,7 +23,7 @@ def tokenizer():
 
 @pytest.fixture(scope="function")
 def inference_session():
-    model_path = ROOT_DIR / "models/onnx/quantized_model.onnx"
+    model_path = ROOT_DIR / "models/final_onnx/quantized_model.onnx"
     return InferenceSession(str(model_path))
 
 
