@@ -27,6 +27,9 @@ wandb = "^0.12.10"
 datasets = "^1.18.2"
 python-dotenv = "^0.19.2"
 
+[tool.poetry.group.dev.dependencies]
+memory-profiler = "^0.61.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
