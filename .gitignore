@@ -140,7 +140,8 @@ models/intermediate_onnx
 .DS_Store
 
 # temp files
-un1
+scratch/
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
