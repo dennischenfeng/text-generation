@@ -9,7 +9,7 @@ from text_generation.inference import generate_new_tokens
 import time
 
 
-app = Flask(
+application = Flask(
     __name__, static_folder=f"{ROOT_DIR}/react-frontend/build", static_url_path="/"
 )
 # application = app  # TODO: remove the need to rename this
@@ -17,12 +17,12 @@ session = InferenceSession(str(ROOT_DIR / "models/final_onnx/quantized_model.onn
 tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
 
 
-@app.route("/")
+@application.route("/")
 def index():
-    return app.send_static_file("index.html")
+    return application.send_static_file("index.html")
 
 
-@app.route("/generate", methods=["POST"])
+@application.route("/generate", methods=["POST"])
 def generate():
     request_dict = request.json
     init_ids = tokenizer(request_dict["inputText"], return_tensors="np")["input_ids"]
@@ -40,4 +40,4 @@ def generate():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    application.run(host="0.0.0.0", port=80)
