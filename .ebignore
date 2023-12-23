@@ -11,3 +11,6 @@ models/intermediate_onnx
 
 # temp files
 scratch/
+
+# node modules
+react-frontend/node_modules/
