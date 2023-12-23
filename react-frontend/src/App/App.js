@@ -1,6 +1,6 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import theme from './theme'
-import { Header, Footer, Settings, TextPanel } from './Components'
+import { Header, Footer, Settings, TextPanel, Instructions } from './Components'
 import { Stack, ThemeProvider } from '@mui/material'
 
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
 
     fetch('/generate', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         inputText: text,
         numTokens: genLength,
@@ -23,35 +23,39 @@ export default function App() {
         temperature: temperature,
       })
     })
-    .then(res => res.json())
-    .then(data => {
-      setText(`${text}${data.result}`)
-      setIsLoading(false)
-    })
+      .then(res => res.json())
+      .then(data => {
+        setText(`${text}${data.result}`)
+        setIsLoading(false)
+      })
   }
 
   return (
     <ThemeProvider theme={theme}>
-      <Header/>
+      <Header />
 
-      <Stack direction='row' alignItems='center' justifyContent='center'>
-        <Settings 
-          genLength={genLength} 
-          setGenLength={setGenLength}
-          topP={topP} 
-          setTopP={setTopP}
-          temperature={temperature} 
-          setTemperature={setTemperature}
-        />  
-        <TextPanel 
-          text={text}
-          setText={setText}
-          generateText={generateText}
-          isLoading={isLoading}
-        />
+      <Stack direction='column' alignItems='center' justifyContent='center'>
+        <Instructions />
+
+        <Stack direction='row' alignItems='center' justifyContent='center'>
+          <Settings
+            genLength={genLength}
+            setGenLength={setGenLength}
+            topP={topP}
+            setTopP={setTopP}
+            temperature={temperature}
+            setTemperature={setTemperature}
+          />
+          <TextPanel
+            text={text}
+            setText={setText}
+            generateText={generateText}
+            isLoading={isLoading}
+          />
+        </Stack>
       </Stack>
 
       <Footer />
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
