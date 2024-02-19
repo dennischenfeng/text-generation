@@ -13,11 +13,14 @@ export default function App() {
   function generateText() {
     setIsLoading(true)
 
+    // trim trailing whitespace as is recommended by the GPT2 model
+    let trimmedText = text.trimEnd()
+
     fetch('/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        inputText: text,
+        inputText: trimmedText,
         numTokens: genLength,
         topP: topP,
         temperature: temperature,
@@ -25,7 +28,7 @@ export default function App() {
     })
       .then(res => res.json())
       .then(data => {
-        setText(`${text}${data.result}`)
+        setText(`${trimmedText}${data.result}`)
         setIsLoading(false)
       })
   }
@@ -34,7 +37,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <Header />
 
-      <Stack direction='column' alignItems='center' justifyContent='center'>
+      <Stack direction='column' alignItems='center' justifyContent='center' sx={{ margin: '20px' }}>
         <Instructions />
 
         <Stack direction='row' alignItems='center' justifyContent='center'>
